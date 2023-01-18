@@ -28,12 +28,6 @@ public class App {
             field = new boolean[row][col];
             visited = new boolean[row][col];
             count = 0;
-            for(int i=0; i<row; i++) { // 배열 초기화
-                for(int j=0; j<col; j++) {
-                    field[i][j] = false;
-                    visited[i][j] = false;
-                }
-            }
             for(int i=0; i<k; i++) { // 심어진 배추 위치 반영
                 st = new StringTokenizer(br.readLine());
                 int y = Integer.parseInt(st.nextToken());
