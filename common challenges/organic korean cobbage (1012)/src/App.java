@@ -59,8 +59,8 @@ public class App {
             int a = x + dx[i]; // a: row 탐색용 임시 좌표
             int b = y + dy[i]; // b: col 탐색용 임시 좌표
 
-            if (a >= 0 && b >= 0 && a < row && b < col && field[a][b]) {
-                dfs(a, b);
+            if (a >= 0 && b >= 0 && a < row && b < col && field[a][b]) { // 유효한 좌표, 심어진 배추 위치 체크
+                dfs(a, b); // 재귀 함수 구현
             }
         }
         return true;
