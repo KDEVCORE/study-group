@@ -35,7 +35,6 @@ public class Main {
         System.out.print(sb);
     }
     public static void dfs(int node) {
-        if(visited[node]) return;
         sb.append(node + " ");
         visited[node] = true;
         for(int item: search[node]) if(!visited[item]) dfs(item);
