@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 public class Main {
     static int[] dx = {0, 1, 0, -1}, dy = {1, 0, -1, 0};
     static int[][] labMap;
-    static int row, col, result = Integer.MIN_VALUE;
+    static int row, col, maxSafeZone;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -16,27 +16,20 @@ public class Main {
         labMap = new int[row][col];
         for(int i=0; i<row; i++) {
             st = new StringTokenizer(br.readLine());
-            for(int j=0; j<col; j++) {
-                labMap[i][j] = Integer.parseInt(st.nextToken());
-            }
+            for(int j=0; j<col; j++) labMap[i][j] = Integer.parseInt(st.nextToken());
         }
-        result = 0;
         dfsVirusBarrierSimulation(0);
-        System.out.println(result);
+        System.out.println(maxSafeZone);
     }
     public static void dfsVirusBarrierSimulation(int installed) {
         if(installed == 3) {
             bfsVirusSpreadSimulation();
             return;
         }
-        for(int i=0; i<row; i++) {
-            for(int j=0; j<col; j++) {
-                if(labMap[i][j] == 0) {
-                    labMap[i][j] = 1;
-                    dfsVirusBarrierSimulation(installed++);
-                    labMap[i][j] = 0;
-                }
-            }
+        for(int i=0; i<row; i++) for(int j=0; j<col; j++) if(labMap[i][j] == 0) {
+            labMap[i][j] = 1;
+            dfsVirusBarrierSimulation(installed+1);
+            labMap[i][j] = 0;
         }
     }
     public static void bfsVirusSpreadSimulation() {
@@ -44,9 +37,7 @@ public class Main {
         Queue<LabInfo> queue = new LinkedList<LabInfo>();
         for(int i=0; i<row; i++) {
             copyMap[i] = labMap[i].clone();
-            for(int j=0; j<col; j++) {
-                if(labMap[i][j] == 2) queue.offer(new LabInfo(i, j));
-            }
+            for(int j=0; j<col; j++) if(labMap[i][j] == 2) queue.offer(new LabInfo(i, j));
         }
 
         while(!queue.isEmpty()) {
@@ -60,16 +51,9 @@ public class Main {
                 }
             }
         }
-        countSafeZone(copyMap);
-    }
-    public static void countSafeZone(int[][] virusMap) {
         int safeZone = 0;
-        for(int i=0; i<row; i++) {
-            for(int j=0; j<col; j++) {
-                if(virusMap[i][j] == 0) safeZone++;
-            }
-        }
-        result = Math.max(result, safeZone);
+        for(int i=0; i<row; i++) for(int j=0; j<col; j++) if(copyMap[i][j] == 0) safeZone++;
+        maxSafeZone = Math.max(maxSafeZone, safeZone);
     }
 }
 class LabInfo {
