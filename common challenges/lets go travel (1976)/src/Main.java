@@ -1,56 +1,38 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int cities, tourCities;
-    static ArrayList<CityInfo>[] connectionInfo;
-    static ArrayList<CityInfo> schedules;
+    static int[] cities;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        cities = Integer.parseInt(br.readLine()); // cities <= 200
-        tourCities = Integer.parseInt(br.readLine()); // tourCites <= 1000
-        connectionInfo = new ArrayList[cities + 1];
+        int cityNumber = Integer.parseInt(br.readLine()); // 도시 번호, cityNumber <= 200
+        cities = new int[cityNumber + 1];
+        for(int i=1; i<=cityNumber; i++) cities[i] = i; // 도시 번호 초기화
+        int schedule = Integer.parseInt(br.readLine()); // 여행할 도시 수, tourCities <= 1000
         StringTokenizer st;
-        for(int i=1; i<=cities; i++) {
-            connectionInfo[i] = new ArrayList<>();
+        for(int i=1; i<=cityNumber; i++) {
             st = new StringTokenizer(br.readLine());
-            for(int j=1; j<=cities; j++) connectionInfo[i].add(Integer.parseInt(st.nextToken()));
-        }
-        schedules = new ArrayList<ScheduleInfo>();
-        ArrayList<Integer> temp = new ArrayList<Integer>();
-        st = new StringTokenizer(br.readLine());
-        for(int i=1; i<=tourCities; i++) temp.add(Integer.parseInt(st.nextToken()));
-        for(int i=0; i<temp.size(); i++) {
-            if(i<(temp.size()-1)) schedules.add(new ScheduleInfo(temp.get(i), temp.get(i+1)));
-        }
-        System.out.println(bfsTourSimulation() ? "YES" : "NO");
-    }
-    public static boolean bfsTourSimulation() {
-        boolean flag = false;
-        Queue<ScheduleInfo> queue = new LinkedList<>();
-        for(ScheduleInfo schedule: schedules) queue.offer(schedule);
-        while(!queue.isEmpty()) {
-            ScheduleInfo now = queue.poll();
-            for(int item: connectionInfo[now.departure]) {
-                if(item == now.arrival) {
-                    connectionInfo[now.departure].set
-                    flag = true;
-                    queue.clear();
-                    break;
-                }
+            for(int j=1; j<=cityNumber; j++) {
+                if(st.nextToken().equals("1")) union(i, j); // 1(연결 도시)인 경우, union 연산
             }
         }
-        return flag;
+        ArrayList<Integer> result = new ArrayList<>();
+        st = new StringTokenizer(br.readLine());
+        for(int i=0; i<schedule; i++) {
+            int x = find(Integer.parseInt(st.nextToken())); // 여행 계획 도시
+            if(!result.contains(x)) result.add(x); // 같은 그룹이 아니면 추가
+        }
+        System.out.println(result.size() == 1 ? "YES" : "NO");
     }
-}
-class CityInfo {
-    int arrival, connection;
-    public CityInfo(int arrival, int connection) {
-        this.arrival = arrival;
-        this.connection = connection;
+    public static void union(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if(a != b) cities[b] = a;
+    }
+    public static int find(int x) {
+        if(x == cities[x]) return x;
+        else return cities[x] = find(cities[x]);
     }
 }
