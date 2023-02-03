@@ -1,18 +1,23 @@
-## Getting Started
+## 문제 요약
+N×M의 행렬로 표현되는 맵(0: 이동 가능, 1: 이동 불가(벽)), (1, 1)에서 (N, M)의 위치까지 이동하려 하는데, 이때 최단 경로로 이동(단, 시작하는 칸과 끝나는 칸도 포함)
+- 만약에 이동하는 도중에 한 개의 벽을 부수고 이동하는 것이 좀 더 경로가 짧아진다면, 벽을 한 개 까지 부수고 이동하여도 된다.
+- 한 칸에서 이동할 수 있는 칸은 상하좌우로 인접한 칸이다.
+[벽 부수고 이동하기#2206](https://www.acmicpc.net/problem/2206)
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## 입력
+- 맵의 행(row)과 열(col): 1 ≤ row, col ≤ 1000
+- 맵 정보: row × col (0: 이동 가능, 1: 이동 불가(벽))
 
-## Folder Structure
+## 출력
+- 최단 거리 (단, 불가능인 경우는 '-1')
 
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## 접근 방법
+만나는 첫번째 벽 제거하고 기억하는 로직 필요, 깊이 변수로 최단 거리 판단하고 맵정보 클래스(MapInfo)로 탐색 정보 저장
+- 그래프 표현 → 인접 행렬(2차원 배열)
+- 탐색 → 너비 우선 탐색(Queue)
+- 클래스(Class) 사용 → 탐색했을 때, 체스판 정보 저장
+    - x: 행(row)
+    - y: 열(column)
+    - z: 깊이(depth, =이동 횟수)
+    - chance: 벽 부술 수 있는 기회
+> 방문 예외 배열(visitException) 이용하여 예외처리 판별

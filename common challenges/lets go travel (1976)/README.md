@@ -1,18 +1,20 @@
-## Getting Started
+## 문제 요약
+도시들이 주어지고 그 도시들 중 선택해 여행경로를 계획했을 때, 여행이 가능한 지 판단(단, 여행 도시는 중복 가능)
+[여행 가자#1976](https://www.acmicpc.net/problem/1976)
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## 입력
+- 도시의 개수(도시 번호): cityNumber ≤ 200
+- 여행 계획 도시 수: schedule ≤ 1000
+- 도시 연결 정보
+    - 0: 연결되지 않음
+    - 1: 연결됨
+- 여행 계획 경로(순서)
 
-## Folder Structure
+## 출력
+- 도시 연결 정보를 바탕으로 여행이 가능하면 'YES', 불가능하면 'NO'
 
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## 접근 방법
+각 도시의 번호를 배열 초기값으로, 연결 정보를 이용하여 Union연산으로 묶음, Find연산으로 리스트에 그룹번호(cities[]의 value값) 조회하여 그룹의 개수로 판단
+- 그래프 표현 → 1차원 배열 & Union-Find
+- 여행 계획 경로 순서대로 탐색 → Find연산, 그룹 개수가 1개면 가능(YES), 아니면 "NO"
+> 처음에는 BFS로 구현하려 했으나 잘 풀리지 않았고, Union-Find 이용해야 한다는 조언을 듣고 수정
