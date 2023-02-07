@@ -1,0 +1,17 @@
+## 문제 요약
+- N개의 곡 연주, 매번 곡이 시자기 전에 볼륨을 바꾸고 연주
+- 볼륨리스트 $V[i]$, 현재 볼륨이 $P$고 $i$번째 곡을 연주하기 전이라면, $i$번째 곡은 $P+V[i]$ 또는 $P-V[i]$의 볼륨으로만 연주(단, 볼륨 조절 결괏값이 0보다 작거나 M보다 클 수 없다)
+- 마지막 곡 볼륨의 최댓값 구하기
+[기타리스트#1495](https://www.acmicpc.net/problem/1495)
+
+## 입력
+- song, default_volume, max_volume (1 ≤ song ≤ 50, 1 ≤ max_volume ≤ 1,000, 0 ≤ default_volume ≤ max_volume)
+- song개의 volume_list (1 <= volume_list[i] <= max_volume)
+
+## 출력
+- 가능한 마지막 곡의 볼륨 중 최댓값을 출력(만약 마지막 곡을 연주할 수 없다면 (중간에 볼륨 조절을 할 수 없다면) -1)
+
+## 접근 방법
+배열 이용, 점화식 도출
+
+> 
