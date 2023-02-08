@@ -18,8 +18,8 @@ public class Main {
         for(int i=1; i<=song; i++) {
             for(int j=0; j<=max_volume; j++) {
                 if(volume[i-1][j] == 1) {
-                    int small = j - volume_list[i];
-                    int large = j + volume_list[i];
+                    int small = j - volume_list[i]; // 감소하는 결괏값 계산
+                    int large = j + volume_list[i]; // 증가하는 결괏값 계산
                     if(small >= 0) volume[i][small] = 1;
                     if(large <= max_volume) volume[i][large] = 1;
                     // 이 로직이 문제인 이유. 이 if문을 한 번도 방문하지 않았을 경우의 반례 케이스 존재. (케이스는 찾지 못함)
