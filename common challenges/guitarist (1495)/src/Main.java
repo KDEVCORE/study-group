@@ -13,21 +13,23 @@ public class Main {
         st = new StringTokenizer(br.readLine());
         for(int i=1; i<=song; i++) volume_list[i] = Integer.parseInt(st.nextToken());
         int result = Integer.MIN_VALUE;
-        int[] volume = new int[song+1];
-        volume[0] = default_volume;
+        int[][] volume = new int[song+1][max_volume+1];
+        volume[0][default_volume] = 1;
         for(int i=1; i<=song; i++) {
-            if(volume[i-1] == -1) break;
-            volume[i] = volume[i-1] + volume_list[i];
-            if(volume[i] < 0 || volume[i] > max_volume) volume[i] = -1;
-            result = Math.max(result, volume[i]);
+            for(int j=0; j<=max_volume; j++) {
+                if(volume[i-1][j] == 1) {
+                    int small = j - volume_list[i];
+                    int large = j + volume_list[i];
+                    if(small >= 0) volume[i][small] = 1;
+                    if(large <= max_volume) volume[i][large] = 1;
+                    if(small < 0 && large > max_volume) {
+                        result = -1;
+                        break;
+                    }
+                }
+            }
         }
-        volume[0] = default_volume;
-        for(int i=1; i<=song; i++) {
-            if(volume[i-1] == -1) break;
-            volume[i] = volume[i-1] + volume_list[i];
-            if(volume[i] < 0 || volume[i] > max_volume) volume[i] = -1;
-            result = Math.max(result, volume[i]);
-        }
+        for(int i=0; i<=max_volume; i++) if(volume[song][i] == 1) result = Math.max(result, i);
         System.out.println(result);
     }
 }
