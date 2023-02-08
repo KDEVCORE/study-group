@@ -22,6 +22,8 @@ public class Main {
                     int large = j + volume_list[i];
                     if(small >= 0) volume[i][small] = 1;
                     if(large <= max_volume) volume[i][large] = 1;
+                    // 이 로직이 문제인 이유. 이 if문을 한 번도 방문하지 않았을 경우의 반례 케이스 존재. (케이스는 찾지 못함)
+                    // 따라서, 이 로직이 완전무결하지 않고 예외가 발생할 수 있어, 해당 로직을 삭제하고 결괏값 도출이 끝난 후 -1 처리.
                     // if(small < 0 && large > max_volume) {
                     //     result = -1;
                     //     break;
@@ -34,7 +36,7 @@ public class Main {
                 for(int k=0; k<=max_volume; k++) if(volume[i][k] == 1) result = Math.max(result, k);
             }
         }
-        if(result==Integer.MIN_VALUE) System.out.println(-1);
+        if(result < 0) System.out.println(-1);
         else System.out.println(result);
     }
 }
