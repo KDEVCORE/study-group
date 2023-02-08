@@ -22,14 +22,19 @@ public class Main {
                     int large = j + volume_list[i];
                     if(small >= 0) volume[i][small] = 1;
                     if(large <= max_volume) volume[i][large] = 1;
-                    if(small < 0 && large > max_volume) {
-                        result = -1;
-                        break;
-                    }
+                    // if(small < 0 && large > max_volume) {
+                    //     result = -1;
+                    //     break;
+                    // }
                 }
+                // if(volume[i-1][j]==1 && j+volume_list[i]<=max_volume) volume[i][j+volume_list[i]]=1;
+                // if(volume[i-1][j]==1 && j-volume_list[i]>=0) volume[i][j-volume_list[i]]=1;
+            }
+            if(i == song) {
+                for(int k=0; k<=max_volume; k++) if(volume[i][k] == 1) result = Math.max(result, k);
             }
         }
-        for(int i=0; i<=max_volume; i++) if(volume[song][i] == 1) result = Math.max(result, i);
-        System.out.println(result);
+        if(result==Integer.MIN_VALUE) System.out.println(-1);
+        else System.out.println(result);
     }
 }
