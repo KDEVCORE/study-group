@@ -12,7 +12,7 @@
 - 받을 수 있는 최대 금액
 
 ## 접근 방법
-BFS로 구현, 탐색 기법으로 클래스(ConsultingInfO)에 정보를 저장하여 결괏값을 누적시켜 결과 도출
+BFS로 구현, 탐색 기법으로 클래스(ConsultingInfo)에 정보를 저장하여 결괏값을 누적시켜 결과 도출
 - 그래프 표현 → 2차원 배열: schedules[][]
 - 탐색 → BFS
 - 클래스(ConsultingInfo) 객체
