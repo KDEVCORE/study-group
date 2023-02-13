@@ -31,7 +31,7 @@ public class Main {
             }
             if(sum != 0) count++; // sum이 0이 아니다 = 이미 강의를 블루레이에 다 담은 상태, 임의 count 증가
             if(count > bluray) start = mid + 1; // 현재 사용된 블루레이 개수(count)가 정해진 블루레이 개수(bluray)보다 크면, 시작 index+1
-            else end = mid - 1; // 
+            else end = mid - 1;
         }
         System.out.println(start);
     }
