@@ -10,15 +10,15 @@ public class Main {
         int titleCount = Integer.parseInt(st.nextToken());
         int characterCount = Integer.parseInt(st.nextToken());
         ArrayList<TitleInfo>[] titleList = new ArrayList[titleCount];
-        for(int i=0; i<titleCount; i++) titleList[i] = new ArrayList<>();
         for(int i=0; i<titleCount; i++) {
             st = new StringTokenizer(br.readLine());
+            titleList[i] = new ArrayList<>();
             titleList[i].add(new TitleInfo(st.nextToken(), Integer.parseInt(st.nextToken())));
         }
-        ArrayList<Integer> characterList = new ArrayList<>();
-        for(int i=0; i<characterCount; i++) characterList.add(Integer.parseInt(br.readLine()));
+        ArrayList<Integer> characterPowerList = new ArrayList<>();
+        for(int i=0; i<characterCount; i++) characterPowerList.add(Integer.parseInt(br.readLine()));
         StringBuilder sb = new StringBuilder();
-        for(int characterPower: characterList) sb.append(getTitle(titleList, characterPower) + "\n");
+        for(int characterPower: characterPowerList) sb.append(getTitle(titleList, characterPower) + "\n");
         System.out.print(sb);
     }
     public static String getTitle(ArrayList<TitleInfo>[] titleList, int fightingPower) {
