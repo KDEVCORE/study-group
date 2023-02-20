@@ -18,22 +18,23 @@ public class Main {
             changeSwitchList(a, b);
         }
         StringBuilder sb = new StringBuilder();
-        for(int i=1; i<=switchCount; i++) sb.append((switchList[i] ? 1 : 0) + (i % 20 == 0 ? " \n" : " "));
+        for(int i=1; i<=switchCount; i++) sb.append((switchList[i] ? 1 : 0) + (i % 20 == 0 ? "\n" : " "));
         System.out.print(sb);
     }
     private static void changeSwitchList(int sex, int number) {
         if(sex == 1) {
             for(int i=number; i<switchList.length; i+=number) switchList[i] = !switchList[i];
         } else {
-            if(number < 3 || number > switchList.length-3) {
-                switchList[number] = !switchList[number];
-            } else {
-                if(switchList[number-1] == switchList[number+1] && switchList[number-2] == switchList[number+2]) {
-                    for(int i=number-2; i<=number+2; i++) switchList[i] = !switchList[i];
-                } else {
-                    switchList[number] = !switchList[number];
+            int index = 1;
+            if(number > 1 && number < switchList.length-1) {
+                while(switchList[number-index] == switchList[number+index]) {
+                    switchList[number-index] = !switchList[number-index];
+                    switchList[number+index] = !switchList[number+index];
+                    index++;
+                    if(number-index < 1 || switchList.length <= number+index) break;
                 }
             }
+            switchList[number] = !switchList[number];
         }
     }
 }
