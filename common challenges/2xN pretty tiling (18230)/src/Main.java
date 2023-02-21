@@ -1,62 +1,55 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Collections;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int[] tileA, tileB, tempA, tempB;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         int size = Integer.parseInt(st.nextToken());
-        tileA = new int[Integer.parseInt(st.nextToken())];
-        tileB = new int[Integer.parseInt(st.nextToken())];
-        tempA = new int[tileA.length];
-        tempB = new int[tileB.length];
+        int typeA = Integer.parseInt(st.nextToken());
+        int typeB = Integer.parseInt(st.nextToken());
+        PriorityQueue<Integer> tilesA = new PriorityQueue<>(Collections.reverseOrder());
         st = new StringTokenizer(br.readLine());
-        for(int i=0; i<tileA.length; i++) tileA[i] = Integer.parseInt(st.nextToken());
+        for(int i=0; i<typeA; i++) tilesA.offer(Integer.parseInt(st.nextToken()));
+        PriorityQueue<Integer> tilesB = new PriorityQueue<>(Collections.reverseOrder());
         st = new StringTokenizer(br.readLine());
-        for(int i=0; i<tileB.length; i++) tileB[i] = Integer.parseInt(st.nextToken());
-        mergeSortA(0, tileA.length-1);
-        mergeSortB(0, tileB.length-1);
-        long sumA = 0, sumB = 0, result = Integer.MIN_VALUE;
-        int b = tileB.length < size / 2 ? tileB.length : size / 2;
-        while(b >= 0) {
-            sumA = 0;
-            sumB = 0;
-            int a = tileA.length < size - (2*b) ? tileA.length : size - (2*b);
-            for(int i=0; i<b; i++) sumB += tileB[i];
-            for(int i=0; i<a; i++) sumA += tileA[i];
-            result = Math.max(result, sumA + sumB);
-            b--;
+        for(int i=0; i<typeB; i++) tilesB.offer(Integer.parseInt(st.nextToken()));
+
+        long result = Integer.MIN_VALUE, sum = 0;
+        int temp = size > 2*typeB ? typeB : size / 2, flag = 0;
+        PriorityQueue<Integer> used = new PriorityQueue<>();
+        while(!tilesB.isEmpty() && flag < temp) { // B타일 합계
+            int pretty = tilesB.poll();
+            used.offer(pretty);
+            sum += pretty;
+            flag++;
         }
-        System.out.println(result);
-    }
-    private static void mergeSortA(int start, int end) {
-        if(start >= end) return;
-        int mid = (start + end) / 2;
-        mergeSortA(start, mid);
-        mergeSortA(mid+1, end);
-        tempA = tileA.clone();
-        int k = start, index1 = start, index2 = mid + 1;
-        while(index1 <= mid && index2 <= end) {
-            if(tempA[index1] < tempA[index2]) tileA[k++] = tempA[index2++];
-            else tileA[k++] = tempA[index1++];
+        flag = 0;
+        while(!tilesA.isEmpty() && flag < size-2*temp) {
+            sum += tilesA.poll(); // A타일 합계
+            flag++;
         }
-        while(index1 <= mid) tileA[k++] = tempA[index1++];
-        while(index2 <= end) tileA[k++] = tempA[index2++];
-    }
-    private static void mergeSortB(int start, int end) {
-        if(start >= end) return;
-        int mid = (start + end) / 2;
-        mergeSortB(start, mid);
-        mergeSortB(mid+1, end);
-        tempB = tileB.clone();
-        int k = start, index1 = start, index2 = mid + 1;
-        while(index1 <= mid && index2 <= end) {
-            if(tempB[index1] < tempB[index2]) tileB[k++] = tempB[index2++];
-            else tileB[k++] = tempB[index1++];
+        result = Math.max(result, sum); // 타일 모두 채웠을 때 합계
+        
+        if(tilesA.size() < 2) {
+            System.out.println(result);
+        } else {
+            for(int item: used) { // 사용했던 B타일
+                while(!tilesA.isEmpty()) { // 최댓값 검증
+                    int tile1 = tilesA.poll();
+                    int tile2 = tilesA.poll();
+                    if(tile1+tile2 > item) {
+                        sum = (sum - item) + (tile1 + tile2);
+                        result = Math.max(result, sum); // 타일 모두 채웠을 때 합계
+                    } else {
+                        System.out.println(result);
+                        return;
+                    }
+                }
+            }
         }
-        while(index1 <= mid) tileB[k++] = tempB[index1++];
-        while(index2 <= end) tileB[k++] = tempB[index2++];
     }
 }
