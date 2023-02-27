@@ -18,26 +18,35 @@ public class Main {
             int j=0;
             for(char item: input.toCharArray()) {
                 board[i][j++] = String.valueOf(item);
+                for(int k=0; k<4; k++) {
+                    int x1 = i + dx[k];
+                    int y1 = j + dy[k];
+                    if(x1 >= 0 && y1 >= 0 && x1 < boardSize && y1 < boardSize) {
+                        // x,y 좌표와 색깔이 다를 경우 담아두기
+                    }
+                }
             }
         }
+        int result = Integer.MIN_VALUE;
         for(int i=0; i<boardSize; i++) {
-            temp = board[i].clone();
             for(int j=0; j<boardSize; j++) {
                 visited = new boolean[boardSize][boardSize];
+                temp = board.clone();
                 for(int k=0; i<4; i++) {
                     int searchX = i + dx[k];
                     int searchY = j + dy[k];
                     if(searchX >=0 && searchY >=0 && searchX < boardSize && searchY < boardSize) {
-                        if(valid(searchX, searchY, board[i][j])) {
-                            String temp = board[i][j];
-                            board[i][j] = board[searchX][searchY];
-                            board[searchX][searchY] = temp;
+                        if(valid(searchX, searchY, temp[i][j])) {
+                            String color = temp[i][j];
+                            temp[i][j] = temp[searchX][searchY];
+                            temp[searchX][searchY] = color;
+                            result = Math.max(result, bfs(searchX, searchY));
                         }
                     }
                 }
             }
         }
-        System.out.println();
+        System.out.println(result);
     }
     private static boolean valid(int x, int y, String color) {
         return board[x][y].equals(color) ? false : true;
@@ -46,16 +55,31 @@ public class Main {
         Queue<BoardInfo> queue = new LinkedList<>();
         queue.offer(new BoardInfo(x, y, 0));
         visited[x][y] = true;
+        int sumC = 0, sumP = 0, sumZ = 0, sumY = 0;
         while(!queue.isEmpty()) {
             BoardInfo now = queue.poll();
             for(int i=0; i<4; i++) {
                 int searchX = now.x + dx[i];
                 int searchY = now.y + dy[i];
-                if(searchX >=0 && searchY >=0 && searchX < boardSize && searchY < boardSize) {
-
+                if(searchX >=0 && searchY >=0 && searchX < boardSize && searchY < boardSize && !visited[searchX][searchY]) {
+                    switch(board[searchX][searchY]) {
+                        case "C":
+                        sumC++;
+                        break;
+                        case "P":
+                        sumP++;
+                        break;
+                        case "Z":
+                        sumZ++;
+                        break;
+                        case "Y":
+                        sumY++;
+                        break;
+                    }
                 }
             }
         }
+        return Math.max(sumC, Math.max(sumP, Math.max(sumZ, sumY)));
     }
 }
 class BoardInfo {
