@@ -34,6 +34,7 @@ public class Main {
         }
     }
     private static void dfsNode(int n) {
-        if()
+        // 개구리를 선호하는 연꽃에 배치 (경우의 수)
+        // 배치 상태에서 개구리끼리 대화 통하는지 판별
     }
 }
