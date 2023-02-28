@@ -10,25 +10,25 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         int node = Integer.parseInt(st.nextToken());
         int bridge = Integer.parseInt(st.nextToken());
-        lotus = new boolean[node+1];
-        int[][] frogTalk = new int[node][4]; // 대화 주제 흥미도
+        frogTalk = new int[node][4]; // 대화 주제 흥미도
         for(int i=0; i<node; i++) {
             st = new StringTokenizer(br.readLine());
             for(int j=0; j<4; j++) frogTalk[i][j] = Integer.parseInt(st.nextToken());
         }
-        int[][] frogPreference = new int[node][2]; // 선호 연꽃 번호
+        frogPreference = new int[node][2]; // 선호 연꽃 번호
         for(int i=0; i<node; i++) {
             st = new StringTokenizer(br.readLine());
             for(int j=0; j<2; j++) frogPreference[i][j] = Integer.parseInt(st.nextToken());
         }
-        int[][] log = new int[bridge][3]; // 통나무 다리 정보
+        logBridge = new int[bridge][3]; // 통나무 다리 정보
         for(int i=0; i<bridge; i++) {
             st = new StringTokenizer(br.readLine());
-            for(int j=0; j<3; j++) log[i][j] = Integer.parseInt(st.nextToken());
+            for(int j=0; j<3; j++) logBridge[i][j] = Integer.parseInt(st.nextToken());
         }
-
+        
         for(int i=0; i<node; i++) {
             for(int j=0; j<2; j++) {
+                lotus = new boolean[node+1];
                 dfsNode(frogPreference[i][j]);
             }
         }
