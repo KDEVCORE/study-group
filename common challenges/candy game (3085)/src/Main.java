@@ -1,93 +1,70 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class Main {
     static int[] dx = {0, 1, 0, -1}, dy = {1, 0, -1, 0};
-    static String[][] board, temp;
+    static char[][] board, temp;
     static boolean[][] visited;
     static int boardSize;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         boardSize = Integer.parseInt(br.readLine());
-        board = new String[boardSize][boardSize];
-        temp = new String[boardSize][boardSize];
+        board = new char[boardSize][boardSize];
+        temp = new char[boardSize][boardSize];
         for(int i=0; i<boardSize; i++) {
             String input = br.readLine();
             int j=0;
-            for(char item: input.toCharArray()) {
-                board[i][j++] = String.valueOf(item);
-                for(int k=0; k<4; k++) {
-                    int x1 = i + dx[k];
-                    int y1 = j + dy[k];
-                    if(x1 >= 0 && y1 >= 0 && x1 < boardSize && y1 < boardSize) {
-                        // x,y 좌표와 색깔이 다를 경우 담아두기
-                    }
-                }
-            }
+            for(char item: input.toCharArray()) board[i][j++] = item;
         }
+        for(int x=0; x<boardSize; x++) temp[x] = board[x].clone();
+
         int result = Integer.MIN_VALUE;
+        int sumC = 0, sumP = 0, sumZ = 0, sumY = 0;
         for(int i=0; i<boardSize; i++) {
             for(int j=0; j<boardSize; j++) {
-                visited = new boolean[boardSize][boardSize];
-                temp = board.clone();
-                for(int k=0; i<4; i++) {
-                    int searchX = i + dx[k];
-                    int searchY = j + dy[k];
-                    if(searchX >=0 && searchY >=0 && searchX < boardSize && searchY < boardSize) {
-                        if(valid(searchX, searchY, temp[i][j])) {
-                            String color = temp[i][j];
-                            temp[i][j] = temp[searchX][searchY];
-                            temp[searchX][searchY] = color;
-                            result = Math.max(result, bfs(searchX, searchY));
-                        }
+                for(int k=0; k<4; k++) {
+                    int kx = i + dx[k];
+                    int ky = j + dy[k];
+                    if(kx >= 0 && ky >= 0 && kx < boardSize && ky < boardSize && temp[i][j] != temp[kx][ky]) {
+                        char item = temp[kx][ky];
+                        temp[kx][ky] = temp[i][j];
+                        temp[i][j] = item;
+                        sumC = search('C');
+                        sumP = search('P');
+                        sumZ = search('Z');
+                        sumY = search('Y');
+                        result = Math.max(result, Math.max(sumC, Math.max(sumP, Math.max(sumZ, sumY))));
+                        for(int x=0; x<boardSize; x++) temp[x] = board[x].clone();
                     }
                 }
             }
         }
         System.out.println(result);
     }
-    private static boolean valid(int x, int y, String color) {
-        return board[x][y].equals(color) ? false : true;
-    }
-    private static int bfs(int x, int y) {
-        Queue<BoardInfo> queue = new LinkedList<>();
-        queue.offer(new BoardInfo(x, y, 0));
-        visited[x][y] = true;
-        int sumC = 0, sumP = 0, sumZ = 0, sumY = 0;
-        while(!queue.isEmpty()) {
-            BoardInfo now = queue.poll();
-            for(int i=0; i<4; i++) {
-                int searchX = now.x + dx[i];
-                int searchY = now.y + dy[i];
-                if(searchX >=0 && searchY >=0 && searchX < boardSize && searchY < boardSize && !visited[searchX][searchY]) {
-                    switch(board[searchX][searchY]) {
-                        case "C":
-                        sumC++;
-                        break;
-                        case "P":
-                        sumP++;
-                        break;
-                        case "Z":
-                        sumZ++;
-                        break;
-                        case "Y":
-                        sumY++;
-                        break;
-                    }
+    private static int search(char item) {
+        int result = Integer.MIN_VALUE, rowSum = 0, colSum = 0, index = 0;
+        while(index < boardSize) {
+            int count = 0;
+            for(int j=0; j<boardSize; j++) {
+                if(item == temp[index][j]) count++;
+                else {
+                    rowSum = Math.max(rowSum, count);
+                    count = 0;
                 }
             }
+            rowSum = Math.max(rowSum, count);
+            count = 0;
+            for(int i=0; i<boardSize; i++) {
+                if(item == temp[i][index]) count++;
+                else {
+                    colSum = Math.max(colSum, count);
+                    count = 0;
+                }
+            }
+            colSum = Math.max(colSum, count);
+            result = Math.max(result, Math.max(rowSum, colSum));
+            index++;
         }
-        return Math.max(sumC, Math.max(sumP, Math.max(sumZ, sumY)));
-    }
-}
-class BoardInfo {
-    int x, y, count;
-
-    public BoardInfo(int x, int y, int count) {
-        this.x = x;
-        this.y = y;
-        this.count = count;
+        return result;
     }
 }
