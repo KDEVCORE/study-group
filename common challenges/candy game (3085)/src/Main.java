@@ -3,19 +3,17 @@ import java.io.InputStreamReader;
 
 public class Main {
     static int[] dx = {0, 1, 0, -1}, dy = {1, 0, -1, 0};
-    static char[][] board, temp;
+    static char[][] board;
     static int boardSize;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         boardSize = Integer.parseInt(br.readLine());
         board = new char[boardSize][boardSize];
-        temp = new char[boardSize][boardSize];
         for(int i=0; i<boardSize; i++) {
             String input = br.readLine();
             int j=0;
             for(char item: input.toCharArray()) board[i][j++] = item;
         }
-        for(int x=0; x<boardSize; x++) temp[x] = board[x].clone();
 
         char[] color = {'C', 'P', 'Z', 'Y'};
         int result = Integer.MIN_VALUE, sum = 0;
@@ -24,17 +22,17 @@ public class Main {
                 for(int k=0; k<4; k++) {
                     int kx = i + dx[k];
                     int ky = j + dy[k];
-                    if(kx >= 0 && ky >= 0 && kx < boardSize && ky < boardSize && temp[i][j] != temp[kx][ky]) {
-                        char item = temp[kx][ky];
-                        temp[kx][ky] = temp[i][j];
-                        temp[i][j] = item;
+                    if(kx >= 0 && ky >= 0 && kx < boardSize && ky < boardSize && board[i][j] != board[kx][ky]) {
+                        char temp = board[kx][ky];
+                        board[kx][ky] = board[i][j];
+                        board[i][j] = temp;
                         for(int c=0; c<color.length; c++) {
                             sum = search(color[c]);
                             result = Math.max(result, sum);
                         }
-                        item = temp[kx][ky];
-                        temp[kx][ky] = temp[i][j];
-                        temp[i][j] = item;
+                        temp = board[kx][ky];
+                        board[kx][ky] = board[i][j];
+                        board[i][j] = temp;
                     }
                 }
             }
@@ -46,13 +44,13 @@ public class Main {
         while(index1 < boardSize) {
             int countRow = 0, countCol = 0, index2 = 0;
             while(index2 < boardSize) {
-                if(item == temp[index1][index2]) countRow++;
+                if(item == board[index1][index2]) countRow++;
                 else {
                     rowSum = Math.max(rowSum, countRow);
                     countRow = 0;
                 }
                 
-                if(item == temp[index2][index1]) countCol++;
+                if(item == board[index2][index1]) countCol++;
                 else {
                     colSum = Math.max(colSum, countCol);
                     countCol = 0;
