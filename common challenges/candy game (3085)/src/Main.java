@@ -4,7 +4,6 @@ import java.io.InputStreamReader;
 public class Main {
     static int[] dx = {0, 1, 0, -1}, dy = {1, 0, -1, 0};
     static char[][] board, temp;
-    static boolean[][] visited;
     static int boardSize;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -18,8 +17,8 @@ public class Main {
         }
         for(int x=0; x<boardSize; x++) temp[x] = board[x].clone();
 
-        int result = Integer.MIN_VALUE;
-        int sumC = 0, sumP = 0, sumZ = 0, sumY = 0;
+        char[] color = {'C', 'P', 'Z', 'Y'};
+        int result = Integer.MIN_VALUE, sum = 0;
         for(int i=0; i<boardSize; i++) {
             for(int j=0; j<boardSize; j++) {
                 for(int k=0; k<4; k++) {
@@ -29,12 +28,13 @@ public class Main {
                         char item = temp[kx][ky];
                         temp[kx][ky] = temp[i][j];
                         temp[i][j] = item;
-                        sumC = search('C');
-                        sumP = search('P');
-                        sumZ = search('Z');
-                        sumY = search('Y');
-                        result = Math.max(result, Math.max(sumC, Math.max(sumP, Math.max(sumZ, sumY))));
-                        for(int x=0; x<boardSize; x++) temp[x] = board[x].clone();
+                        for(int c=0; c<color.length; c++) {
+                            sum = search(color[c]);
+                            result = Math.max(result, sum);
+                        }
+                        item = temp[kx][ky];
+                        temp[kx][ky] = temp[i][j];
+                        temp[i][j] = item;
                     }
                 }
             }
@@ -42,28 +42,28 @@ public class Main {
         System.out.println(result);
     }
     private static int search(char item) {
-        int result = Integer.MIN_VALUE, rowSum = 0, colSum = 0, index = 0;
-        while(index < boardSize) {
-            int count = 0;
-            for(int j=0; j<boardSize; j++) {
-                if(item == temp[index][j]) count++;
+        int result = Integer.MIN_VALUE, rowSum = 0, colSum = 0, index1 = 0;
+        while(index1 < boardSize) {
+            int countRow = 0, countCol = 0, index2 = 0;
+            while(index2 < boardSize) {
+                if(item == temp[index1][index2]) countRow++;
                 else {
-                    rowSum = Math.max(rowSum, count);
-                    count = 0;
+                    rowSum = Math.max(rowSum, countRow);
+                    countRow = 0;
                 }
-            }
-            rowSum = Math.max(rowSum, count);
-            count = 0;
-            for(int i=0; i<boardSize; i++) {
-                if(item == temp[i][index]) count++;
+                
+                if(item == temp[index2][index1]) countCol++;
                 else {
-                    colSum = Math.max(colSum, count);
-                    count = 0;
+                    colSum = Math.max(colSum, countCol);
+                    countCol = 0;
                 }
+                
+                index2++;
             }
-            colSum = Math.max(colSum, count);
+            rowSum = Math.max(rowSum, countRow);
+            colSum = Math.max(colSum, countCol);
             result = Math.max(result, Math.max(rowSum, colSum));
-            index++;
+            index1++;
         }
         return result;
     }
