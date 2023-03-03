@@ -40,29 +40,25 @@ public class Main {
         System.out.println(result);
     }
     private static int search(char item) {
-        int result = Integer.MIN_VALUE, rowSum = 0, colSum = 0, index1 = 0;
+        int maxSum = Integer.MIN_VALUE, index1 = 0;
         while(index1 < boardSize) {
             int countRow = 0, countCol = 0, index2 = 0;
             while(index2 < boardSize) {
                 if(item == board[index1][index2]) countRow++;
                 else {
-                    rowSum = Math.max(rowSum, countRow);
+                    maxSum = Math.max(maxSum, countRow);
                     countRow = 0;
                 }
-                
                 if(item == board[index2][index1]) countCol++;
                 else {
-                    colSum = Math.max(colSum, countCol);
+                    maxSum = Math.max(maxSum, countCol);
                     countCol = 0;
                 }
-                
                 index2++;
             }
-            rowSum = Math.max(rowSum, countRow);
-            colSum = Math.max(colSum, countCol);
-            result = Math.max(result, Math.max(rowSum, colSum));
+            maxSum = Math.max(maxSum, Math.max(countRow, countCol));
             index1++;
         }
-        return result;
+        return maxSum;
     }
 }
