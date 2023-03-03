@@ -61,6 +61,13 @@ public class Main {
     }
     private static boolean validation() {
 		for (int i=0; i<logBridge.length; i++) {
+            // 억지스럽다고 느낀 이유
+            // int nodeA = logBridge[i][0];
+            // int nodeB = logBridge[i][1];
+            // int theme = logBridge[i][2];
+            // int frog1 = lotus[nodeA];
+            // int frog2 = lotus[nodeB];
+			// if(frogTalk[frog1][theme] != frogTalk[frog2][theme]) return false;
 			if(frogTalk[lotus[logBridge[i][0]]][logBridge[i][2]] != frogTalk[lotus[logBridge[i][1]]][logBridge[i][2]]) return false;
 		}
 		return true;
