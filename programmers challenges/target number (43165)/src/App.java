@@ -3,28 +3,33 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class App {
-    static int[] temp;
-    static int number, target, answear, end;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        number = Integer.parseInt(st.nextToken());
-        target = Integer.parseInt(st.nextToken());
-        temp = new int[number];
+        int number = Integer.parseInt(st.nextToken());
+        int target = Integer.parseInt(st.nextToken());
+        int[] temp = new int[number];
         st = new StringTokenizer(br.readLine());
         for(int i=0; i<number; i++) temp[i] = Integer.parseInt(st.nextToken());
-        answear = 0;
-        end = number-1;
-        searchDepth(0, 0);
-        System.out.println(answear);
 
+        Solution solution = new Solution();
+        System.out.println(solution.solution(temp, target));
     }
-    private static void searchDepth(int depth, int count) {
-        if(depth == end) {
-            if(count+temp[depth] == target || count-temp[depth] == target) answear++;
+}
+
+class Solution {
+    static int answer;
+    public int solution(int[] numbers, int target) {
+        answer = 0;
+        searchDepth(numbers, target, 0, 0);
+        return answer;
+    }
+    private static void searchDepth(int[] arr, int target, int depth, int count) {
+        if(depth == arr.length-1) {
+            if(count+arr[depth] == target || count-arr[depth] == target) answer++;
             return;
         }
-        searchDepth(depth+1, count+temp[depth]);
-        searchDepth(depth+1, count-temp[depth]);
+        searchDepth(arr, target, depth+1, count+arr[depth]);
+        searchDepth(arr, target, depth+1, count-arr[depth]);
     }
 }
