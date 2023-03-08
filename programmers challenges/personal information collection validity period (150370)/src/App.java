@@ -45,8 +45,7 @@ class Solution {
             if(item.termsType.equals(type)) {
                 month += item.validMonth;
                 if(month > 12) {
-                    int xYear = month / 12;
-                    year += xYear;
+                    year += (month / 12);
                     month = month % 12;
                     if(month == 0) {
                         year--;
@@ -56,9 +55,7 @@ class Solution {
                 if(day == 1) {
                     month--;
                     day = 28;
-                } else {
-                    day--;
-                }
+                } else day--;
                 
                 if(year < baseYear) return true;
                 else {
