@@ -27,8 +27,7 @@ class Solution {
         
         while(n > 0) {
             if(pq.peek() > 0) {
-                int temp = pq.poll();
-                pq.offer(temp-1);
+                pq.offer(pq.poll()-1);
                 n--;
             }
         }
