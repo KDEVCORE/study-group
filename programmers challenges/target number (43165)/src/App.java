@@ -18,13 +18,13 @@ public class App {
 }
 
 class Solution {
-    static int answer;
+    int answer;
     public int solution(int[] numbers, int target) {
         answer = 0;
         searchDepth(numbers, target, 0, 0);
         return answer;
     }
-    private static void searchDepth(int[] arr, int target, int depth, int count) {
+    private void searchDepth(int[] arr, int target, int depth, int count) {
         if(depth == arr.length-1) {
             if(count+arr[depth] == target || count-arr[depth] == target) answer++;
             return;

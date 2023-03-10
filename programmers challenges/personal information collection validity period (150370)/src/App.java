@@ -16,8 +16,8 @@ public class App {
     }
 }
 class Solution {
-    static ArrayList<Terms> termsList;
-    static int baseYear, baseMonth, baseDay;
+    ArrayList<Terms> termsList;
+    int baseYear, baseMonth, baseDay;
     public ArrayList<Integer> solution(String today, String[] terms, String[] privacies) {
         ArrayList<Integer> answer = new ArrayList<>();
         StringTokenizer st = new StringTokenizer(today, ".");
