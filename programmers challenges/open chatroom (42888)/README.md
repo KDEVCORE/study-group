@@ -56,4 +56,4 @@ Muzi가 나간후 다시 들어올 때, Prodo 라는 닉네임으로 들어올 �
     - 채팅방에서 나간 유저가 닉네임을 변경하는 등 잘못 된 입력은 주어지지 않는다.
 
 ## 접근 방법
-Action class, Member class 선언. 각 클래스에 id라는 주체가 있고, 그 행동 주체에 따라서 결과 출력
+Action class 선언, Member info HashMap 선언. id라는 주체가 있고, 그 행동 주체에 따라서 결과 출력
