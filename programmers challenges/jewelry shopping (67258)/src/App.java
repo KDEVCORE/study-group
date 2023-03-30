@@ -24,20 +24,20 @@ class Solution {
         int start=0, tmp_start=0;
         int min_distance = Integer.MAX_VALUE;
 
-        for(String gem: gems){
+        for(String gem: gems) {
             queue.add(gem);
             map.put(gem, map.getOrDefault(gem, 0)+1); // key:gem, value: map에 key값이 있으면 gem, 없으면 기본값 0
 
-            while(true){
+            while(true) {
                 String tmp = queue.peek();
-                if(map.get(tmp)>1){
+                if(map.get(tmp) > 1) {
                     map.put(tmp, map.get(tmp)-1);
                     queue.poll();
                     tmp_start++;
                 } else break;
             }
 
-            if(map.size() == set.size() && min_distance > queue.size()){
+            if(map.size() == set.size() && min_distance > queue.size()) {
                 min_distance = queue.size();
                 start = tmp_start;
             }
