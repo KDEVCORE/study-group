@@ -2,7 +2,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
+import java.util.stream.Collectors;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -15,11 +17,13 @@ public class App {
 }
 class Solution {
     public int[] solution(String[] gems) {
-        HashSet<String> set = new HashSet<>(Arrays.asList(gems));
+        // HashSet<String> set = new HashSet<>(Arrays.asList(gems));
+        List<String> list = Arrays.stream(gems).distinct().collect(Collectors.toList());
         HashMap<String, Integer> map = new HashMap<>();
         Queue<String> queue = new LinkedList<>();
 
-        if(set.size() == 1) return new int[]{1,1};
+        // if(set.size() == 1) return new int[]{1,1};
+        if(list.size() == 1) return new int[]{1,1};
 
         int start=0, tmp_start=0;
         int min_distance = Integer.MAX_VALUE;
@@ -37,7 +41,8 @@ class Solution {
                 } else break;
             }
 
-            if(map.size() == set.size() && min_distance > queue.size()) {
+            // if(map.size() == set.size() && min_distance > queue.size()) {
+            if(map.size() == list.size() && min_distance > queue.size()) {
                 min_distance = queue.size();
                 start = tmp_start;
             }
